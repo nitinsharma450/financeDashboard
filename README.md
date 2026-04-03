@@ -1,9 +1,9 @@
-#💰 Finance Dashboard
+# Finance Dashboard
 
 A modern and responsive Finance Dashboard built using React + TypeScript + Tailwind CSS + Recharts.
 It helps users track income, expenses, and visualize financial data with interactive charts.
 
-🚀 ##Live Demo
+## Live Demo
 
 👉 https://finance-dashboard-ten-phi-28.vercel.app
 
@@ -46,20 +46,11 @@ Fully responsive across:
 -Charts: Recharts
 -State Management: React Hooks (useState, useEffect)
 Deployment: Vercel
-📂 Project Structure
-finance-dashboard/
-│── src/
-│   ├── App.tsx
-│   ├── components/
-│   ├── styles/
-│── public/
-│── package.json
-│── README.md
 ⚙️ Installation & Setup
 1. Clone the repository
-git clone https://github.com/your-username/finance-dashboard.git
-cd finance-dashboard
+-git clone https://github.com/your-username/finance-dashboard.git
+-cd finance-dashboard
 2. Install dependencies
-npm install
+-npm install
 3. Run locally
-npm run dev
+-npm run dev
