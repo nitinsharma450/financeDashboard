@@ -7,7 +7,7 @@ It helps users track income, expenses, and visualize financial data with interac
 
 ## 🚀 Live Demo
 
-👉 https://finance-dashboard-ten-phi-28.vercel.app
+👉 https://finance-dashboard-7wqlivl8x-nitinsharma1059-1842s-projects.vercel.app
 
 ---
 
