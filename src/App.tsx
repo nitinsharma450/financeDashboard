@@ -4,7 +4,6 @@ import {
   Tooltip, XAxis, YAxis, ResponsiveContainer
 } from "recharts";
 
-
 type Transaction = {
   id: number;
   date: string;
@@ -15,7 +14,6 @@ type Transaction = {
 
 type Role = "Viewer" | "Admin";
 
-// mock data
 const initialData: Transaction[] = [
   { id: 1, date: "2026-04-01", amount: 2000, category: "Food", type: "expense" },
   { id: 2, date: "2026-04-02", amount: 10000, category: "Salary", type: "income" },
@@ -23,7 +21,7 @@ const initialData: Transaction[] = [
 ];
 
 export default function App() {
-  
+
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     const saved = localStorage.getItem("transactions");
     return saved ? JSON.parse(saved) : initialData;
@@ -33,12 +31,11 @@ export default function App() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
 
-  // SAVE TO LOCAL STORAGE
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
 
-  
+  // basic calculations
   const income = transactions
     .filter(t => t.type === "income")
     .reduce((sum, t) => sum + t.amount, 0);
@@ -49,7 +46,7 @@ export default function App() {
 
   const balance = income - expense;
 
-  // filter aand sort
+  // filter + sort (simple logic)
   const visibleTransactions = transactions
     .filter(t =>
       t.category.toLowerCase().includes(search.toLowerCase()) &&
@@ -57,7 +54,7 @@ export default function App() {
     )
     .sort((a, b) => b.amount - a.amount);
 
-  // CATEGORY DATA
+  // prepare category data
   const categoryMap: Record<string, number> = {};
 
   transactions.forEach(t => {
@@ -71,9 +68,9 @@ export default function App() {
     value: categoryMap[key],
   }));
 
-  const topCategory = categoryData.sort((a, b) => b.value - a.value)[0];
+  const topCategory = [...categoryData].sort((a, b) => b.value - a.value)[0];
 
-  // ADD TRANSACTION (ADMIN)
+  // admin add
   const addTransaction = () => {
     const newTxn: Transaction = {
       id: Date.now(),
@@ -87,15 +84,17 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 px-4 sm:px-6 py-6">
       <div className="max-w-7xl mx-auto space-y-8">
 
-        {/* HEADER */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-800">Finance Dashboard</h1>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+            Finance Dashboard
+          </h1>
 
           <select
-            className="border rounded-xl px-4 py-2 bg-white shadow-sm"
+            className="border rounded-lg px-4 py-2 bg-white shadow-sm w-full sm:w-auto"
             onChange={(e) => setRole(e.target.value as Role)}
           >
             <option>Viewer</option>
@@ -103,15 +102,15 @@ export default function App() {
           </select>
         </div>
 
-        {/* CARDS */}
-        <div className="grid md:grid-cols-3 gap-6">
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           <Card title="Balance" value={balance} />
           <Card title="Income" value={income} />
           <Card title="Expense" value={expense} />
         </div>
 
-        {/* CHARTS */}
-        <div className="grid md:grid-cols-2 gap-6">
+        {/* Charts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Box title="Balance Trend">
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={transactions}>
@@ -135,17 +134,17 @@ export default function App() {
           </Box>
         </div>
 
-        {/* TRANSACTIONS */}
+        {/* Transactions */}
         <Box title="Transactions">
-          <div className="flex flex-wrap gap-3 mb-4">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-4">
             <input
               placeholder="Search..."
-              className="border rounded-xl px-4 py-2"
+              className="border rounded-lg px-4 py-2 w-full sm:w-auto"
               onChange={(e) => setSearch(e.target.value)}
             />
 
             <select
-              className="border rounded-xl px-4 py-2"
+              className="border rounded-lg px-4 py-2 w-full sm:w-auto"
               onChange={(e) => setFilter(e.target.value)}
             >
               <option value="">All</option>
@@ -156,51 +155,54 @@ export default function App() {
             {role === "Admin" && (
               <button
                 onClick={addTransaction}
-                className="bg-blue-600 text-white px-4 py-2 rounded-xl"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
               >
                 + Add
               </button>
             )}
           </div>
 
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-600">
-              <tr>
-                <th className="p-3">Date</th>
-                <th className="p-3">Amount</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Type</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {visibleTransactions.length === 0 ? (
+          {/* Table wrapper for mobile scroll */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[500px]">
+              <thead className="bg-gray-50 text-gray-600">
                 <tr>
-                  <td colSpan={4} className="text-center p-4 text-gray-400">
-                    No data
-                  </td>
+                  <th className="p-3 text-left">Date</th>
+                  <th className="p-3 text-left">Amount</th>
+                  <th className="p-3 text-left">Category</th>
+                  <th className="p-3 text-left">Type</th>
                 </tr>
-              ) : (
-                visibleTransactions.map(t => (
-                  <tr key={t.id} className="border-t">
-                    <td className="p-3">{t.date}</td>
-                    <td className="p-3">₹{t.amount}</td>
-                    <td className="p-3">{t.category}</td>
-                    <td className={`p-3 ${t.type === "income" ? "text-green-600" : "text-red-500"}`}>
-                      {t.type}
+              </thead>
+
+              <tbody>
+                {visibleTransactions.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="text-center p-4 text-gray-400">
+                      No data
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  visibleTransactions.map(t => (
+                    <tr key={t.id} className="border-t">
+                      <td className="p-3">{t.date}</td>
+                      <td className="p-3 font-medium">₹{t.amount}</td>
+                      <td className="p-3">{t.category}</td>
+                      <td className={`p-3 ${t.type === "income" ? "text-green-600" : "text-red-500"}`}>
+                        {t.type}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </Box>
 
-        {/* INSIGHTS */}
+        {/* Insights */}
         <Box title="Insights">
-          <p>Top Category: {topCategory?.name || "N/A"}</p>
-          <p>Total Spent: ₹{expense}</p>
-          <p>
+          <p className="text-gray-700">Top Category: {topCategory?.name || "N/A"}</p>
+          <p className="text-gray-700">Total Spent: ₹{expense}</p>
+          <p className="text-gray-700">
             You spend most on <b>{topCategory?.name}</b>
           </p>
         </Box>
@@ -210,10 +212,11 @@ export default function App() {
   );
 }
 
+// small reusable components
 
 function Card({ title, value }: { title: string; value: number }) {
   return (
-    <div className="bg-white p-5 rounded-2xl shadow border">
+    <div className="bg-white p-5 rounded-xl shadow border">
       <p className="text-gray-500 text-sm">{title}</p>
       <h2 className="text-xl font-bold">₹{value}</h2>
     </div>
@@ -222,7 +225,7 @@ function Card({ title, value }: { title: string; value: number }) {
 
 function Box({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white p-6 rounded-2xl shadow border">
+    <div className="bg-white p-5 sm:p-6 rounded-xl shadow border">
       <h2 className="text-lg font-semibold mb-3">{title}</h2>
       {children}
     </div>
