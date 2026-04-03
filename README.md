@@ -10,47 +10,47 @@ It helps users track income, expenses, and visualize financial data with interac
 ✨ Features
 📊 Dashboard Overview
 Summary cards for:
--Total Balance
--Total Income
--Total Expense
+- Total Balance
+- Total Income
+- Total Expense
 📈 Data Visualization
--Line Chart → Balance trend over time
--Pie Chart → Spending breakdown by category
+- Line Chart → Balance trend over time
+- Pie Chart → Spending breakdown by category
 📋 Transactions Management
--View all transactions in a table
--Search transactions by category
+- View all transactions in a table
+- Search transactions by category
 Filter by:
--Income
--Expense
--Sorted transactions (highest amount first)
+- Income
+- Expense
+- Sorted transactions (highest amount first)
 🔐 Role-Based UI
--Viewer:Can only view data
+- Viewer:Can only view data
 
--Admin:Can add new transactions
+- Admin:Can add new transactions
 
 🧠 Insights Section
--Highest spending category
--Total spending summary
--Smart spending insight
+- Highest spending category
+- Total spending summary
+- Smart spending insight
 💾 Data Persistence
--Uses Local Storage
--Data remains after refresh
+- Uses Local Storage
+- Data remains after refresh
 📱 Responsive Design
 Fully responsive across:
--Mobile
--Tablet
--Desktop
+- Mobile
+- Tablet
+- Desktop
 🛠️ Tech Stack
--Frontend: React, TypeScript
--Styling: Tailwind CSS
--Charts: Recharts
--State Management: React Hooks (useState, useEffect)
+- Frontend: React, TypeScript
+- Styling: Tailwind CSS
+- Charts: Recharts
+- State Management: React Hooks (useState, useEffect)
 Deployment: Vercel
 ⚙️ Installation & Setup
 1. Clone the repository
--git clone https://github.com/your-username/finance-dashboard.git
--cd finance-dashboard
+- git clone https://github.com/your-username/finance-dashboard.git
+- cd finance-dashboard
 2. Install dependencies
--npm install
+- npm install
 3. Run locally
 -npm run dev
